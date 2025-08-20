@@ -1,0 +1,98 @@
+# LyraAI Dataset Downloader Configuration
+# This file controls how the dataset is acquired from Apple Music.
+
+# --- Project Details ---
+PROJECT_NAME: "LyraAI"
+
+# --- Directory Paths ---
+# Base path for all raw downloaded data.
+RAW_DATA_BASE_PATH: "data/raw"
+# Subdirectories for specific data types.
+RAW_AUDIO_DIR: "data/raw/audio"
+RAW_LYRICS_DIR: "data/raw/lyrics"
+RAW_META_DIR: "data/raw/meta"
+# Base path for temporary files created during download.
+TEMP_PATH_BASE: "data/raw/temp"
+
+# --- Apple Music API Settings ---
+# Path to your Netscape format cookies.txt file.
+# This is required for authentication with the Apple Music API.
+COOKIES_PATH: "cookies.txt"
+
+# --- Download Strategy ---
+# 'playlists': Downloads all songs from the URLs specified below.
+# 'genres': Searches for playlists by genre and downloads a target number of songs.
+DOWNLOAD_MODE: 'playlists'
+
+# --- Lyrics Format ---
+# The format for downloaded synced lyrics. We need TTML for word-level ground truth.
+# Options: LRC, ENHANCED_LRC, SRT, TTML
+LYRICS_FORMAT: "TTML"
+
+# --- Playlist URLs ---
+# A list of Apple Music playlist URLs to download from when DOWNLOAD_MODE is 'playlists'.
+PLAYLIST_URLS: [
+    # Japanese
+    "https://music.apple.com/us/playlist/haken-anisong/pl.89d598cd24cb4cf89895085a0fa278ec",
+    "https://music.apple.com/us/playlist/anime-rewind/pl.434e71c6da7f4dbf8c4e8d130177c809",
+    "https://music.apple.com/us/playlist/ado-essentials/pl.a91ae9bfb69543348b54c2ba5fca4bd6",
+    "https://music.apple.com/us/playlist/karaoke-hits/pl.ad831dcfc24f456987b4011c1ddfdd39",
+    "https://music.apple.com/us/playlist/jpop/pl.u-qxylEelT3ympbjD",
+    "https://music.apple.com/us/playlist/2010s-japan-essentials/pl.cd1c5acfdb8440f593734ff0f9d17bfd",
+    "https://music.apple.com/us/playlist/japan-hits-2024/pl.15fc72e800354792b242704defc35828",
+    "https://music.apple.com/us/playlist/japan-hits-2023/pl.a20d2d4cd1524a3db1a1e1d86df5a351",
+    "https://music.apple.com/us/playlist/anime-hits-2024/pl.df29139e667941f2b6ff881f30417cb6",
+    "https://music.apple.com/us/playlist/anime-hits-2023/pl.0b8cc135585446dda5b4f3c016b317ac",
+    "https://music.apple.com/us/playlist/anime-hits-2022/pl.a6b77010749a48d2b7faf6628877879d",
+    "https://music.apple.com/us/playlist/anime-hits-2021/pl.69ad46f7bd8a411d9b74f11571926d0b",
+    "https://music.apple.com/us/playlist/japan-hits-2022/pl.3f9599d3d9344ef2b75d4baa7a319297",
+    "https://music.apple.com/us/playlist/japan-hits-2021/pl.f1634b3ba5414e19b71303f670640f6a",
+    "https://music.apple.com/us/playlist/japan-hits-2020/pl.374dd56fd325409790a3b674bc9219b7",
+    # Mandarin
+    "https://music.apple.com/us/playlist/the-a-list-mandopop/pl.beb783da7712481fbeed35be144bd48c",
+    "https://music.apple.com/us/playlist/00s-mandopop-essentials/pl.b5c94ec72f3041d6844ad0772a36f001",
+    "https://music.apple.com/us/playlist/10s-mandopop-essentials/pl.3e52664b20ea45c394a37f4a7f3a8451",
+    "https://music.apple.com/us/playlist/breaking-mandopop/pl.80e13199d5db46c7b519b25cf6e5816a",
+    "https://music.apple.com/us/playlist/sing-mandopop/pl.7094457cee324d6ebb28388ccaeca7f3",
+    "https://music.apple.com/us/playlist/viral-c-pop/pl.2a0a202d08c3439e95d22a73126f4417",
+    "https://music.apple.com/us/playlist/jay-chou-essentials/pl.d467987f72384448b2bebe52c0b212d6",
+    "https://music.apple.com/us/playlist/c-pop-karaoke/pl.3c940066ea8d47adb2d317c492a981fe",
+    "https://music.apple.com/us/playlist/sing-c-pop/pl.2a64c26b81454c93bded5d28f3c10980",
+    "https://music.apple.com/us/playlist/c-pop-in-spatial-audio/pl.7cdf5c34b7c84bf0b0ff3f9188528439",
+    "https://music.apple.com/us/playlist/mandopop-rewind/pl.6d8228f57b864a4296dc02d9761a0d9b",
+    "https://music.apple.com/us/playlist/mandopop-love-songs/pl.8e9831f8282c46bc80aceea9399bb32d",
+    "https://music.apple.com/us/playlist/g-e-m-essentials/pl.22769c2f1d9441948b01c1ff88df6ad8",
+    "https://music.apple.com/us/playlist/jj-lin-essentials/pl.92e5bbee7ab6458bbb21a83f0ab7adeb",
+    "https://music.apple.com/us/playlist/skai-isyourgod-essentials/pl.97eb106b56c4464391428464c4144d86",
+    # Korean
+    "https://music.apple.com/us/playlist/k-pop-essentials/pl.6a3c854a49a542739e5d57291b27e122",
+    "https://music.apple.com/us/playlist/viral-k-pop/pl.5b7698bbcd01407a92b8457f650bebaf",
+    "https://music.apple.com/us/playlist/kpopwrld/pl.48229b41bbfc47d7af39dae8e8b5276e",
+    "https://music.apple.com/us/playlist/new-in-k-pop/pl.a784f95d4f504d579647523ff95433be",
+    "https://music.apple.com/us/playlist/a-list-k-pop-2021/pl.454b6b29fa994a93bdc74efbe7a2c465",
+    "https://music.apple.com/us/playlist/kpop/pl.u-r2yB1l2FRVXlW2Z",
+    "https://music.apple.com/us/playlist/sing-k-pop/pl.eedcf6c827634111bc74c594a9611035",
+    "https://music.apple.com/us/playlist/k-pop-hits-2024/pl.b3c079fea5704332baed562d8f90d3a8",
+    "https://music.apple.com/us/playlist/kpopwrld-best-of-2024/pl.7991277c753843278ed804dc068a39ad",
+    "https://music.apple.com/us/playlist/k-pop-hits-2023/pl.27ef9ad4441e411685fb4a1780554242",
+    "https://music.apple.com/us/playlist/k-pop-hits-2021/pl.bfabe2bda0d649f087c145fc6cf8f3df",
+    "https://music.apple.com/us/playlist/k-pop-hits-2019/pl.2b6a604f99504e7abca0d0e9e967c2ed",
+    "https://music.apple.com/us/playlist/k-pop-hits-2018/pl.70ffac3c74584226a85c0635d8e495a1",
+    "https://music.apple.com/us/playlist/k-pop-hits-2017/pl.db349869c368476bb18bf4e0489bf0f5",
+    "https://music.apple.com/us/playlist/k-pop-hits-2016/pl.f173cf0a920f43e29e4f687bb6b44cf6",
+    # English
+    "https://music.apple.com/us/playlist/radio-chart-rock/pl.ca17374227094d6fb2b27a1e6f144c8a",
+    "https://music.apple.com/us/playlist/hip-hop-hits/pl.87c7af5767764860a0e3368d0bef9a6f",
+    "https://music.apple.com/us/playlist/todays-hits/pl.f4d106fed2bd41149aaacabb233eb5eb",
+    "https://music.apple.com/us/playlist/pop/pl.u-MDAWvJDCAbMB7xk",
+    "https://music.apple.com/us/playlist/rock/pl.u-06oxDWAIYxga6qZ",
+    "https://music.apple.com/us/playlist/2010s-hits-essentials/pl.6b1b5dfda067443481265436811002f1",
+    "https://music.apple.com/us/playlist/2000s-hits-essentials/pl.e50ccee7318043eaaf8e8e28a2a55114",
+    "https://music.apple.com/us/playlist/2010s-hip-hop-essentials/pl.af758ba03e6d44548184717eebb38f9b",
+    "https://music.apple.com/us/playlist/2000s-hip-hop-essentials/pl.482dea7b74fc4df28b69e823fd5fac2f",
+    "https://music.apple.com/us/playlist/rap/pl.u-EdAVzv3tDmYjo26",
+    "https://music.apple.com/us/playlist/sing-metal/pl.13af5e98f5204bf7a50b65f7256ad49d",
+    "https://music.apple.com/us/playlist/sing-rock/pl.fd8febae00c640578d64acd144702ff5",
+    "https://music.apple.com/us/playlist/sing-classic-rock/pl.cef51bb331854e8d87b78f8651c7e3a0",
+    "https://music.apple.com/us/playlist/sing-hard-rock/pl.485e685ff54b4fb491d1e910b7a34660",
+]
