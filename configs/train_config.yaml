@@ -1,48 +1,81 @@
-model_name: mandarin_opencpop-extension
+# configs/train_config.yaml
+# Modified for the LyraAI Project
 
-# settings
-float32_matmul_precision: high
-random_seed: 114514
+# --- Model & Training Run Identifier ---
+# Changed from the default to our new project name.
+model_name: "LyraAI"
 
-# dataloader
-dataloader_workers: 0
-dataloader_prefetch_factor: 2
-oversampling_weights: [ 1, 1, 1 ] # full_label, weak_label, no_label
-batch_max_length: 100 # unit: seconds
-binning_length: 1000 # unit: seconds
-drop_last: False
+# --- Performance & Reproducibility ---
+float32_matmul_precision: "high"
+random_seed: 1234
 
-# model
+# --- Dataloader Configuration ---
+dataloader_workers: 16 # Adjust based on your CPU cores
+
+# Our dataset from `prepare_sofa_data.py` only contains 'full_label' data.
+# The order is [no_label, weak_label, full_label].
+# We set weights for others to 0 so the sampler only uses our high-quality data.
+oversampling_weights: [0, 0, 1]
+
+# Max total length of audio (in seconds) per batch.
+# Adjust this based on your GPU memory. 600 is a good starting point.
+batch_max_length: 600
+binning_length: 1000
+drop_last: true
+
+# --- Trainer Configuration ---
+accelerator: "gpu"
+devices: 1 # Set to the number of GPUs you want to use
+precision: "16-mixed" # Use mixed precision for faster training and less memory usage
+gradient_clip_val: 1.0
+gradient_clip_algorithm: "norm"
+val_check_interval: 1000 # Validate every 1000 training steps
+check_val_every_n_epoch: null
+
+# --- Model Architecture ---
+# Using the default SOFA model architecture which is well-suited for this task.
 model:
-  hidden_dims: 128
-  down_sampling_factor: 3
-  down_sampling_times: 7
-  channels_scaleup_factor: 1.5
+  hidden_dims: 256
+  down_sampling_factor: 2
+  down_sampling_times: 5
+  channels_scaleup_factor: 2
 
+# --- Optimizer & Scheduler Configuration ---
 optimizer_config:
-  total_steps: 100000
-  weight_decay: 0.1
+  # Total training steps. This is a key parameter to tune.
+  # 200k is a solid starting point for a large dataset.
+  total_steps: 200000
   lr:
-    backbone: 0.0005
-    head: 0.0005
+    backbone: 0.001
+    head: 0.001
+  weight_decay: 0.01
   freeze:
-    backbone: False
-    head: False
+    backbone: false
+    head: false
 
+# --- Loss Function Configuration ---
+# Using the default SOFA loss weights and functions.
+# These are well-tuned for the task of forced alignment.
 loss_config:
-  losses:
-    weights: [10.0, 0.1, 0.01, 0.1, 1.0, 1.0, 5.0]
-    enable_RampUpScheduler: [False,False,False,True,True,True,True]
   function:
     num_bins: 10
-    alpha: 0.999
-    label_smoothing: 0.08
+    alpha: 0.5
+    label_smoothing: 0.05
     pseudo_label_ratio: 0.3
-
-# trainer
-accelerator: auto
-devices: auto # num_devices
-precision: bf16-mixed # bf16-mixed , 32-true
-gradient_clip_val: 1.0
-gradient_clip_algorithm: norm #value
-val_check_interval: 500 # 0.25
+  losses:
+    weights:
+      - 1.0 # ph_frame_GHM_loss
+      - 1.0 # ph_edge_GHM_loss
+      - 1.0 # ph_edge_EMD_loss
+      - 1.0 # ph_edge_diff_loss
+      - 1.0 # ctc_GHM_loss
+      - 1.0 # consistency_loss
+      - 1.0 # pseudo_label_loss
+    enable_RampUpScheduler:
+      - false
+      - false
+      - false
+      - false
+      - false
+      - true
+      - true

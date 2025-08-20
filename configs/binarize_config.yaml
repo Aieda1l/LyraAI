@@ -1,28 +1,48 @@
+# configs/binarize_config.yaml
+# Modified for the LyraAI Project
+
+# --- Data Source Configuration ---
+# Point this to the directory we created with the `prepare_sofa_data.py` script.
+# This is the most critical change.
+data_folder: "data/sofa_prepared"
+
+# --- Validation Set Configuration ---
+# Number of songs to hold out for validation.
+# A good starting point is 100-200 songs.
+valid_set_size: 150
+
+# In our case, all data is in the 'AppleMusic' folder, so this isn't critical.
+# We can leave it empty.
+valid_set_preferred_folders: []
+
+# --- Data Augmentation ---
+# This creates variations of the training data to improve model robustness.
+# 'size' is the number of additional augmented samples to create per original sample.
+data_augmentation:
+  size: 2
+  key_shift_choices: [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6]
+
+# --- Phoneme Configuration ---
+# We don't need to ignore any phonemes other than the standard silence marker.
+# Our G2P process produces clean IPA and 'SP'.
+ignored_phonemes:
+  - "SP"
+
+# --- Audio Processing (Mel Spectrogram) ---
+# These settings define how the raw audio is converted into a spectrogram for the model.
+# We use a 44.1kHz sample rate to match our prepared WAV files.
 melspec_config:
-  n_mels: 128
   sample_rate: 44100
-  win_length: 1024
+  win_length: 2048
   hop_length: 512
   n_fft: 2048
+  n_mels: 256
   fmin: 40
   fmax: 16000
-  clamp: 0.00001
-  scale_factor: 4
+  clamp: 1.0e-5
+  scale_factor: 4 # This factor increases time resolution, crucial for alignment.
 
-data_folder: data/
-valid_set_size: 15
-valid_set_preferred_folders:
-  - test
-ignored_phonemes:
-  - AP
-  - SP
-  - <AP>
-  - <SP>
-  - ''
-  - pau
-  - cl
-data_augmentation:
-  size: 2 # If the data contains unlabeled data, it must be equal to or greater than 1.
-  key_shift_choices: [ 1, 2, 3, 4, 5, 6,-1,-2,-3,-4,-5,-6 ]
-
-max_length: 45 # unit: second
+# --- Binarization Settings ---
+# Maximum length of a song in seconds. Songs longer than this will be skipped.
+# 10 minutes (600s) is a safe upper limit for most songs.
+max_length: 600
